@@ -61,6 +61,9 @@ const base = {
         loader: "file-loader"
       }]
     }, {
+      test: /\.node$/,
+      loader: "node-loader",
+    }, {
       test: /\.(eot|woff|ttf)$/,
       use: [{
         loader: "file-loader"
