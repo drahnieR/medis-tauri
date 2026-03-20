@@ -1,0 +1,26 @@
+[package]
+name = "medis"
+version = "1.0.3"
+description = "GUI for Redis"
+authors = ["luin"]
+license = "MIT"
+repository = "https://github.com/luin/medis"
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "medis_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[[bin]]
+name = "medis"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

@@ -8,6 +8,10 @@
   "author": "luin <i@zihua.li> (http://zihua.li)",
   "main": "dist/main",
   "scripts": {
+    "dev": "tauri dev",
+    "build:tauri": "tauri build",
+    "vite": "vite",
+    "build:vite": "vite build",
     "build": "rm -rf dist && webpack",
     "watch": "WEBPACK_WATCH=true npm run build",
     "start": "electron .",
@@ -18,6 +22,8 @@
     "url": "git://github.com/luin/medis.git"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-opener": "^2",
     "electron-context-menu": "^0.12.1",
     "electron-download": "^4.1.1",
     "fixed-data-table-contextmenu": "^1.7.2",
@@ -33,6 +39,9 @@
     "xterm": "^3.13.1"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@vitejs/plugin-react": "^4",
+    "vite": "^6",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
