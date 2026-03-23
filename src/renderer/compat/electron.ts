@@ -1,22 +1,25 @@
 /**
  * Browser-compatible shim for Electron APIs used in the renderer.
- *   - ipcRenderer.send/on  → step 4 (Tauri invoke + event system)
- *   - remote.dialog        → step 4 (tauri-plugin-dialog)
- *   - remote window.close  → step 4 (Tauri window API)
+ *   - ipcRenderer.send/on  → cross-window IPC no longer needed (single window)
+ *   - remote.dialog        → @tauri-apps/plugin-dialog
+ *   - remote window.close  → @tauri-apps/api/window
  *   - clipboard            → navigator.clipboard (works today)
  *   - remote.Menu          → @tauri-apps/api/menu native context menu
  */
 
 import { Menu, MenuItem, PredefinedMenuItem } from '@tauri-apps/api/menu'
+import { open as openDialog } from '@tauri-apps/plugin-dialog'
+import { getCurrentWindow } from '@tauri-apps/api/window'
 
 // ── ipcRenderer ─────────────────────────────────────────────────────────────
 
 export const ipcRenderer = {
   send(channel: string, ...args: unknown[]) {
-    console.debug('[ipcRenderer.send — stub]', channel, ...args)
+    // Cross-window IPC is not needed in single-window Tauri app.
+    console.debug('[ipcRenderer.send — no-op]', channel, ...args)
   },
   on(_channel: string, _listener: (...args: unknown[]) => void) {
-    // Will be replaced with tauri listen() in step 4
+    // no-op
   },
 }
 
@@ -34,15 +37,13 @@ export const remote = {
   getCurrentWindow() {
     return {
       close() {
-        // Step 4: import('@tauri-apps/api/window').then(m => m.getCurrentWindow().close())
-        console.debug('[remote.getCurrentWindow().close — stub]')
+        getCurrentWindow().close().catch(console.error)
       },
     }
   },
 
   Menu: {
     buildFromTemplate(template: Array<{ label?: string; type?: string; click?: () => void }>) {
-      // Build items asynchronously; store the promise so popup() can await it.
       const menuPromise = Promise.all(
         template.map(item => {
           if (item.type === 'separator') {
@@ -61,10 +62,15 @@ export const remote = {
   },
 
   dialog: {
-    showOpenDialog(_win: unknown, _options: unknown): string[] | null {
-      // Step 4: replace with tauri-plugin-dialog open()
-      console.debug('[remote.dialog.showOpenDialog — stub]')
-      return null
+    /** Returns a Promise resolving to an array of selected file paths, or null. */
+    async showOpenDialog(
+      _win: unknown,
+      options: { properties?: string[]; message?: string } = {},
+    ): Promise<string[] | null> {
+      const multiple = options.properties?.includes('multiSelections') ?? false
+      const result = await openDialog({ multiple, directory: false, title: options.message })
+      if (!result) return null
+      return Array.isArray(result) ? result : [result]
     },
   },
 }

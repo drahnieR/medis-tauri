@@ -37,7 +37,9 @@ export default class Modal extends React.Component {
         theme: 'jqueryui'
       })
 
-      $('.row input, .row select', ReactDOM.findDOMNode(this.refs.form)).first().focus()
+      const $inputs = $('.row input', ReactDOM.findDOMNode(this.refs.form))
+      $inputs.attr({ autocomplete: 'off', autocorrect: 'off', autocapitalize: 'off', spellcheck: 'false' })
+      $inputs.first().focus()
     } else {
       $('.nt-button', ReactDOM.findDOMNode(this)).first().focus()
     }

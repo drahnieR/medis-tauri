@@ -2,18 +2,19 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import {setSize} from 'Redux/actions'
 import SplitPane from 'react-split-pane'
 import KeyBrowser from './KeyBrowser'
 import Content from './Content'
 import './index.scss'
 
 class Database extends React.PureComponent {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.$window = $(window)
 
     this.state = {
-      sidebarWidth: 260,
+      sidebarWidth: props.sidebarWidth,
       key: null,
       db: 0,
       version: 0,
@@ -48,10 +49,11 @@ class Database extends React.PureComponent {
       className="pane-group"
       split="vertical"
       minSize={250}
-      defaultSize={260}
+      defaultSize={this.props.sidebarWidth}
       ref="node"
       onChange={size => {
         this.setState({sidebarWidth: size})
+        this.props.setSize('sidebar', size)
       }}
       >
       <KeyBrowser
@@ -86,8 +88,9 @@ function mapStateToProps(state, {instance}) {
   return {
     patterns: state.patterns,
     redis: instance.get('redis'),
-    connectionKey: instance.get('connectionKey')
+    connectionKey: instance.get('connectionKey'),
+    sidebarWidth: state.sizes.get('sidebarBarWidth') || 260,
   }
 }
 
-export default connect(mapStateToProps)(Database)
+export default connect(mapStateToProps, {setSize})(Database)

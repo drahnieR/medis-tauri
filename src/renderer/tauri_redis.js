@@ -29,6 +29,13 @@ function withCallback(promise, callback) {
   return promise
 }
 
+/** Normalize a single Redis arg for IPC: Buffer/Uint8Array → plain number array. */
+function sanitizeArg(a) {
+  if (a === null || a === undefined) return ''
+  if (a instanceof Uint8Array) return Array.from(a)
+  return a
+}
+
 /** Pluck an optional trailing callback from a rest-args array (mutates). */
 function extractCallback(args) {
   if (args.length && typeof args[args.length - 1] === 'function') {
@@ -49,7 +56,7 @@ class Pipeline {
   }
 
   _add(command, args) {
-    this._cmds.push({ command: command.toUpperCase(), args: args.map(a => (a === null || a === undefined) ? '' : a) })
+    this._cmds.push({ command: command.toUpperCase(), args: args.map(sanitizeArg) })
     return this
   }
 
@@ -64,6 +71,10 @@ class Pipeline {
   zcard(key)                   { return this._add('ZCARD',  [key]) }
   get(key)                     { return this._add('GET',    [key]) }
   set(key, value)              { return this._add('SET',    [key, value]) }
+  hset(key, field, value)      { return this._add('HSET',   [key, field, value]) }
+  hdel(key, ...fields)         { return this._add('HDEL',   [key, ...fields]) }
+  lset(key, index, value)      { return this._add('LSET',   [key, String(index), value]) }
+  lpush(key, ...values)        { return this._add('LPUSH',  [key, ...values]) }
   srem(key, ...members)        { return this._add('SREM',   [key, ...members]) }
   sadd(key, ...members)        { return this._add('SADD',   [key, ...members]) }
   zrem(key, ...members)        { return this._add('ZREM',   [key, ...members]) }
@@ -99,7 +110,7 @@ export class TauriRedisClient {
     return invoke('redis_execute', {
       connectionId: this._id,
       command: command.toUpperCase(),
-      args: args.map(a => (a === null || a === undefined) ? '' : a),
+      args: args.map(sanitizeArg),
       binary,
     })
   }

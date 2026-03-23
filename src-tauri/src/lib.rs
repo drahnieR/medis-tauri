@@ -242,6 +242,12 @@ async fn redis_pipeline(
         .collect())
 }
 
+/// Read a local file as UTF-8 text (used by Config for TLS/SSH PEM files).
+#[tauri::command]
+fn read_text_file(path: String) -> Result<String, String> {
+    std::fs::read_to_string(&path).map_err(|e| e.to_string())
+}
+
 /// Execute a Lua script via EVAL.
 #[tauri::command]
 async fn redis_eval(
@@ -287,12 +293,14 @@ pub fn run() {
     tauri::Builder::default()
         .manage(RedisState::new())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             redis_connect,
             redis_disconnect,
             redis_execute,
             redis_pipeline,
             redis_eval,
+            read_text_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

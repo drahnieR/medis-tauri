@@ -3,7 +3,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import {remote} from 'electron'
-import fs from 'fs'
+import {readFileAsync} from 'fs'
 
 import './index.scss'
 
@@ -89,14 +89,14 @@ class Config extends React.PureComponent {
       />
       <button
         className={'icon icon-dot-3 ssh-key'}
-        onClick={() => {
+        onClick={async () => {
           const win = remote.getCurrentWindow()
-          const files = remote.dialog.showOpenDialog(win, {
+          const files = await remote.dialog.showOpenDialog(win, {
             properties: ['openFile']
           })
           if (files && files.length) {
             const file = files[0]
-            const content = fs.readFileSync(file, 'utf8')
+            const content = await readFileAsync(file)
             this.setProp({[id]: content, [`${id}File`]: file})
           }
         }}
@@ -157,7 +157,7 @@ class Config extends React.PureComponent {
             />
             <button
               className={'icon icon-key ssh-key' + (this.getProp('sshKey') ? ' is-active' : '')}
-              onClick={() => {
+              onClick={async () => {
                 if (this.getProp('sshKey')) {
                   this.setProp({
                     sshKey: false,
@@ -166,13 +166,13 @@ class Config extends React.PureComponent {
                   return
                 }
                 const win = remote.getCurrentWindow()
-                const files = remote.dialog.showOpenDialog(win, {
+                const files = await remote.dialog.showOpenDialog(win, {
                   message: 'Select a private key (Most often in the ~/.ssh)',
                   properties: ['openFile', 'showHiddenFiles']
                 })
                 if (files && files.length) {
                   const file = files[0]
-                  const content = fs.readFileSync(file, 'utf8')
+                  const content = await readFileAsync(file)
                   this.setProp({sshKey: content, sshKeyFile: file})
                 }
               }}
