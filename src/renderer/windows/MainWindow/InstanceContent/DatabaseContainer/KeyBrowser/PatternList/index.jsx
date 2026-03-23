@@ -4,7 +4,7 @@ import React from 'react'
 import {ipcRenderer} from 'electron'
 import {List} from "immutable"
 
-require('./index.scss')
+import './index.scss'
 
 class PatternList extends React.Component {
   constructor(props) {

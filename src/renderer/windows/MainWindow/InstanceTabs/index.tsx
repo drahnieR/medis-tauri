@@ -1,7 +1,7 @@
 import React, {memo} from 'react'
 import Tabs from './Tabs'
 
-require('./main.scss')
+import './main.scss'
 
 function isModalShown() {
   return $('.Modal').length > 0

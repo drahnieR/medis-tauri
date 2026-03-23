@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-require('json-editor')
+import 'json-editor'
 
-require('./index.scss')
+import './index.scss'
 
 export default class Modal extends React.Component {
   handleSubmit() {

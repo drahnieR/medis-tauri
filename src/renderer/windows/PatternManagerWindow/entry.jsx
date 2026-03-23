@@ -1,6 +1,6 @@
 'use strict'
 
-require('../../photon/css/photon.min.css')
+import '../../photon/css/photon.min.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -8,22 +8,12 @@ import {Provider} from 'react-redux'
 import PatternManagerWindow from './'
 import store from 'Redux/store'
 import * as actions from 'Redux/actions'
-import {remote, ipcRenderer} from 'electron'
+import $ from 'jquery'
+import '../../styles/global.scss'
 
-require('../../styles/global.scss')
+window.$ = window.jQuery = $
 
-window.$ = window.jQuery = require('jquery');
-
-ipcRenderer.on('action', (evt, action) => {
-  if (type === 'delInstance') {
-    remote.getCurrentWindow().close()
-    return
-  }
-
-  store.skipPersist = true
-  store.dispatch(actions[action]())
-  store.skipPersist = false
-})
+// Step 4: wire up tauri listen() for cross-window actions
 
 ReactDOM.render(
   <Provider store={store}>

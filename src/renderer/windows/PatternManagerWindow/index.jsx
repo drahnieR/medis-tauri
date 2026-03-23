@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {createPattern, updatePattern, removePattern} from 'Redux/actions'
 import {List} from 'immutable'
 
-require('./app.scss')
+import './app.scss'
 
 const connectionKey = getParameterByName('arg')
 

@@ -7,7 +7,7 @@ import ContentEditable from '../../ContentEditable'
 import AddButton from '../../AddButton'
 import zip from 'lodash.zip'
 import {clipboard, remote} from 'electron'
-require('./index.scss')
+import './index.scss'
 
 class KeyList extends React.Component {
   state = {

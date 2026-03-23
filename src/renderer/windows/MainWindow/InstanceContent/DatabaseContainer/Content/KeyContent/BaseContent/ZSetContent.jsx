@@ -12,7 +12,7 @@ import ReactDOM from 'react-dom'
 import {clipboard, remote} from 'electron'
 import sortedIndexBy from 'lodash.sortedindexby'
 
-require('./index.scss')
+import './index.scss'
 
 class ZSetContent extends BaseContent {
   save(value, callback) {

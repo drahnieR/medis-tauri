@@ -5,7 +5,7 @@ import Immutable from 'immutable'
 import {remote} from 'electron'
 import fs from 'fs'
 
-require('./index.scss')
+import './index.scss'
 
 class Config extends React.PureComponent {
   state = {

@@ -9,7 +9,7 @@ import SetContent from './BaseContent/SetContent'
 import HashContent from './BaseContent/HashContent'
 import ZSetContent from './BaseContent/ZSetContent'
 
-require('./index.scss')
+import './index.scss'
 
 class KeyContent extends PureComponent {
   constructor() {

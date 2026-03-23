@@ -8,7 +8,7 @@ import Editor from './Editor'
 import AddButton from '../../../AddButton'
 import {remote} from 'electron'
 
-require('./index.scss')
+import './index.scss'
 
 class SetContent extends BaseContent {
   save(value, callback) {

@@ -3,24 +3,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Codemirror from 'medis-react-codemirror'
-require('codemirror/mode/javascript/javascript')
-require('codemirror/addon/lint/json-lint')
-require('codemirror/addon/lint/lint')
-require('codemirror/addon/selection/active-line')
-require('codemirror/addon/edit/closebrackets')
-require('codemirror/addon/edit/matchbrackets')
-require('codemirror/addon/search/search')
-require('codemirror/addon/search/searchcursor')
-require('codemirror/addon/search/jump-to-line')
-require('codemirror/addon/dialog/dialog')
-require('codemirror/addon/dialog/dialog.css')
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/lint/json-lint'
+import 'codemirror/addon/lint/lint'
+import 'codemirror/addon/selection/active-line'
+import 'codemirror/addon/edit/closebrackets'
+import 'codemirror/addon/edit/matchbrackets'
+import 'codemirror/addon/search/search'
+import 'codemirror/addon/search/searchcursor'
+import 'codemirror/addon/search/jump-to-line'
+import 'codemirror/addon/dialog/dialog'
+import 'codemirror/addon/dialog/dialog.css'
 import jsonlint from 'jsonlint'
 window.jsonlint = jsonlint.parser
-require('codemirror/lib/codemirror.css')
-require('codemirror/addon/lint/lint.css')
-const msgpack = require('msgpack5')()
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/addon/lint/lint.css'
+import _msgpack5 from 'msgpack5'
+const msgpack = _msgpack5()
 
-require('./index.scss')
+import './index.scss'
 
 class Editor extends React.PureComponent {
   constructor() {

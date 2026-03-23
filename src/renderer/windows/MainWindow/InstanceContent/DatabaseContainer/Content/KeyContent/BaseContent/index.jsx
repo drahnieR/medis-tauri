@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-require('./index.scss')
+import './index.scss'
 
 const getDefaultState = function () {
   return {

@@ -3,7 +3,7 @@
 import React from 'react'
 import clone from 'lodash.clone'
 
-require('./index.scss')
+import './index.scss'
 
 class Config extends React.Component {
   constructor(props) {

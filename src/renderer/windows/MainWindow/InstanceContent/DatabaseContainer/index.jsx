@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import SplitPane from 'react-split-pane'
 import KeyBrowser from './KeyBrowser'
 import Content from './Content'
-require('./index.scss')
+import './index.scss'
 
 class Database extends React.PureComponent {
   constructor() {

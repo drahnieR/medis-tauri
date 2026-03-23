@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import escape from 'lodash.escape'
 
-require('./index.scss')
+import './index.scss'
 
 export default class ContentEditable extends React.Component {
   constructor() {

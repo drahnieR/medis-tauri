@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Medis",
+  "productName": "Medis Tauri",
   "version": "1.0.3",
-  "identifier": "li.zihua.medis",
+  "identifier": "li.zihua.medis-tauri",
   "build": {
     "frontendDist": "../dist/renderer",
     "devUrl": "http://localhost:5173",

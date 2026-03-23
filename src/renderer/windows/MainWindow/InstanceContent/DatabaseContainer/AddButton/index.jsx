@@ -1,6 +1,6 @@
 import React, {memo} from 'react'
 
-require('./index.scss')
+import './index.scss'
 
 function AddButton({title, reload, onReload, onClick}) {
   return (<div className="AddButton">

@@ -1,7 +1,7 @@
 'use strict'
 
 import React, {memo} from 'react'
-require('./index.scss')
+import './index.scss'
 
 const TABS = ['Content', 'Terminal', 'Config']
 

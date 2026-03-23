@@ -1,5 +1,5 @@
 [package]
-name = "medis"
+name = "medis-tauri"
 version = "1.0.3"
 description = "GUI for Redis"
 authors = ["luin"]
@@ -13,7 +13,7 @@ name = "medis_lib"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [[bin]]
-name = "medis"
+name = "medis-tauri"
 path = "src/main.rs"
 
 [build-dependencies]
