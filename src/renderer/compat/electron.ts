@@ -1,11 +1,13 @@
 /**
  * Browser-compatible shim for Electron APIs used in the renderer.
- * Each stub will be replaced with a real Tauri equivalent in the relevant step:
  *   - ipcRenderer.send/on  → step 4 (Tauri invoke + event system)
  *   - remote.dialog        → step 4 (tauri-plugin-dialog)
  *   - remote window.close  → step 4 (Tauri window API)
  *   - clipboard            → navigator.clipboard (works today)
+ *   - remote.Menu          → @tauri-apps/api/menu native context menu
  */
+
+import { Menu, MenuItem, PredefinedMenuItem } from '@tauri-apps/api/menu'
 
 // ── ipcRenderer ─────────────────────────────────────────────────────────────
 
@@ -39,12 +41,20 @@ export const remote = {
   },
 
   Menu: {
-    buildFromTemplate(_template: unknown[]) {
-      // Native context menus are not available in the browser webview.
-      // Step 4: replace with a custom React context menu or Tauri menu API.
+    buildFromTemplate(template: Array<{ label?: string; type?: string; click?: () => void }>) {
+      // Build items asynchronously; store the promise so popup() can await it.
+      const menuPromise = Promise.all(
+        template.map(item => {
+          if (item.type === 'separator') {
+            return PredefinedMenuItem.new({ item: 'Separator' })
+          }
+          return MenuItem.new({ text: item.label ?? '', action: item.click ?? (() => {}) })
+        })
+      ).then(items => Menu.new({ items }))
+
       return {
-        popup() {
-          console.debug('[remote.Menu.popup — stub]')
+        popup(_win?: unknown) {
+          menuPromise.then(menu => menu.popup()).catch(console.error)
         },
       }
     },

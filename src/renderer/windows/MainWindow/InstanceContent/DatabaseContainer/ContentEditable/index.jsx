@@ -20,6 +20,10 @@ export default class ContentEditable extends React.Component {
         onBlur={this.handleSubmit.bind(this)}
         contentEditable={enabled}
         ref="text"
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         dangerouslySetInnerHTML={{__html: escape(html)}}
         />
     </div>)

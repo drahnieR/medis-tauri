@@ -12,6 +12,9 @@ import MainWindow from './'
 window.$ = window.jQuery = $
 window.Buffer = Buffer
 
+// Suppress the WKWebView default context menu (Tauri's native menu API is used instead)
+window.addEventListener('contextmenu', e => { e.preventDefault() })
+
 // Step 4: replace with tauri listen('action', ...) to receive events from
 // the Rust backend (e.g. when another window triggers a Redux action).
 // ipcRenderer.on('action', (evt, action) => { store.dispatch(actions[action]()) })

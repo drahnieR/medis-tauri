@@ -3,7 +3,13 @@
 import React from 'react'
 import commands from 'redis-commands'
 import splitargs from 'redis-splitargs'
-import 'jquery.terminal'
+import $ from 'jquery'
+import _jqtFactory from 'jquery.terminal'
+// In Vite's CJS-to-ESM transform jquery.terminal exports a factory.
+// Call it with jQuery to attach $.fn.terminal if it hasn't been done yet.
+if (typeof _jqtFactory === 'function' && !$.fn.terminal) {
+  _jqtFactory(window, $)
+}
 
 import '../../../../../../../../node_modules/jquery.terminal/css/jquery.terminal.css'
 import './index.scss'

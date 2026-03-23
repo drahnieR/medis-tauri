@@ -27,6 +27,30 @@
   input {
     padding-left: 22px;
   }
+
+  .pattern-clear {
+    position: absolute;
+    right: 40px;
+    top: 0;
+    height: 42px;
+    line-height: 42px;
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #999;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.1s;
+    user-select: none;
+
+    &:hover {
+      color: #333;
+    }
+  }
+
+  &:hover .pattern-clear {
+    opacity: 1;
+  }
 }
 
 .pattern-dropdown {
@@ -74,6 +98,91 @@
   span.icon {
     margin-right: 5px;
   }
+}
+
+// Pattern Manager modal
+.pattern-manager-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pattern-manager-dialog {
+  background: #f5f5f4;
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  width: 580px;
+  overflow: hidden;
+}
+
+.pattern-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #e0e0e0;
+  border-bottom: 1px solid #c5c5c5;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.pattern-manager-close {
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+  line-height: 1;
+  &:hover { color: #000; }
+}
+
+.pattern-manager-body {
+  display: flex;
+  padding: 16px;
+  gap: 14px;
+  min-height: 260px;
+}
+
+.pattern-manager-list {
+  position: relative;
+  background: #fff;
+  border: 1px solid #c5c5c5;
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+
+  .pattern-manager-items {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  footer {
+    border-top: 1px solid #b4b4b4;
+    background: #fafafa;
+    display: flex;
+    button {
+      width: 24px;
+      height: 20px;
+      border: none;
+      border-right: 1px solid #b4b4b4;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      &.is-disabled { color: #bfbfbf; cursor: default; }
+      &:hover:not(.is-disabled) { background: #e8e8e8; }
+    }
+  }
+}
+
+.pattern-manager-form {
+  flex: 1;
+  .nt-form-row { padding: 6px 0; }
+  label { float: none !important; width: auto !important; text-align: left !important; display: block; margin-bottom: 3px; font-size: 12px; }
+  input { margin-left: 0 !important; width: 100% !important; box-sizing: border-box; }
 }
 
 .list-header{
