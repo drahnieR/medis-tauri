@@ -19,9 +19,17 @@ class MainWindow extends PureComponent {
   }
 
   onHotKey(e) {
-    const {instances, selectInstance} = this.props
+    const {instances, createInstance, delInstance, selectInstance} = this.props
     if (!e.ctrlKey && e.metaKey) {
       const code = e.keyCode
+      if (code === 84) { // Cmd+T — new tab
+        createInstance()
+        return false
+      }
+      if (code === 87) { // Cmd+W — close current tab
+        delInstance()
+        return false
+      }
       if (code >= 49 && code <= 57) {
         const number = code - 49
         if (number === 8) {

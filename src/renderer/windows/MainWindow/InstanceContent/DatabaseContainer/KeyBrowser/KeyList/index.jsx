@@ -205,7 +205,15 @@ class KeyList extends React.Component {
     }).catch(() => {})
   }
 
+  _onDocumentMouseUp = () => {
+    const el = document.activeElement
+    if (el && el.classList.contains('public_Scrollbar_main')) {
+      el.blur()
+    }
+  }
+
   componentDidMount() {
+    document.addEventListener('mouseup', this._onDocumentMouseUp)
     $(ReactDOM.findDOMNode(this)).on('keydown', e => {
       if (typeof this.index === 'number' && typeof this.state.editableKey !== 'string') {
         if (e.keyCode === 8) {
@@ -234,6 +242,10 @@ class KeyList extends React.Component {
       return true
     })
     this.scan()
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mouseup', this._onDocumentMouseUp)
   }
 
   setTTLforKey() {
@@ -391,6 +403,7 @@ class KeyList extends React.Component {
           this.handleSelect(index)
           this.setState({editableKey: this.state.keys[index][0]})
         }}
+        overflowX="hidden"
         width={this.props.width}
         height={this.props.height}
         headerHeight={24}

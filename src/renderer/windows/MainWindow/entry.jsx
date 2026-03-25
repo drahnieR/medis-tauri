@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom'
 import $ from 'jquery'
 import { Buffer } from 'buffer'
 import { getCurrentWindow } from '@tauri-apps/api/window'
-import { LogicalSize } from '@tauri-apps/api/dpi'
+import { invoke } from '@tauri-apps/api/core'
 import MainWindow from './'
 
 window.$ = window.jQuery = $
@@ -17,22 +17,19 @@ window.Buffer = Buffer
 // Suppress the WKWebView default context menu (Tauri's native menu API is used instead)
 window.addEventListener('contextmenu', e => { e.preventDefault() })
 
-// Persist and restore window size
+// Show the window (Rust already applied the saved size before this runs)
 ;(async () => {
   const win = getCurrentWindow()
-  const saved = localStorage.getItem('windowSize')
-  if (saved) {
-    const {width, height} = JSON.parse(saved)
-    await win.setSize(new LogicalSize(width, height))
-  }
+  await win.show()
+  await win.setFocus()
   let saveTimer
   window.addEventListener('resize', () => {
     clearTimeout(saveTimer)
     saveTimer = setTimeout(() => {
-      localStorage.setItem('windowSize', JSON.stringify({
+      invoke('save_window_size', {
         width: window.innerWidth,
         height: window.innerHeight,
-      }))
+      }).catch(console.error)
     }, 500)
   })
 })()

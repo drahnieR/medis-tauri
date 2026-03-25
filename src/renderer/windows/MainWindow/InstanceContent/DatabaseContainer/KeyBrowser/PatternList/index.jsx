@@ -125,6 +125,24 @@ class PatternList extends React.Component {
       patternHistory,
       showManager: false,
     }
+    this._containerRef = React.createRef()
+    this._handleOutsideClick = this._handleOutsideClick.bind(this)
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this._handleOutsideClick)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this._handleOutsideClick)
+  }
+
+  _handleOutsideClick(e) {
+    if (this.state.patternDropdown &&
+        this._containerRef.current &&
+        !this._containerRef.current.contains(e.target)) {
+      this.setState({patternDropdown: false})
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -154,6 +172,7 @@ class PatternList extends React.Component {
   handleKeyDown(evt) {
     if (evt.key === 'Enter') {
       this.updatePatternHistory(evt.target.value)
+      this.setState({patternDropdown: false})
     }
   }
 
@@ -164,7 +183,7 @@ class PatternList extends React.Component {
     const hasSaved = patterns.size > 0
 
     return (
-      <div className="pattern-input">
+      <div className="pattern-input" ref={this._containerRef}>
         <span className="icon icon-search"/>
         <input
           type="search"

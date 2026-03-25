@@ -64,9 +64,6 @@ function InstanceTabs({
         }}
         shouldCancelStart={(e) => (e.target as any).nodeName.toUpperCase() === 'SPAN'}
       />
-      <div className='tab-item tab-item-btn' onClick={handleAddButtonClick}>
-        <span>{'+'}</span>
-      </div>
     </div>
   </div>
 }

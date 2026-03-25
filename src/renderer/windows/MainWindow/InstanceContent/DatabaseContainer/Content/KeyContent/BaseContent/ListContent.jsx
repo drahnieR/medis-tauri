@@ -159,6 +159,7 @@ class ListContent extends BaseContent {
           desc={this.state.desc}
           />
       }
+      columnKey="index"
       width={this.props.indexBarWidth}
       isResizable
       cell={({rowIndex}) => {

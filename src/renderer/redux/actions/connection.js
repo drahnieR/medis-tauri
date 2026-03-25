@@ -27,10 +27,24 @@ export const connectToRedis = createAction('CONNECT', config => ({ dispatch, nex
   dispatch(updateConnectStatus('Connecting…'))
   invoke('redis_connect', {
     config: {
+      // Basic
       host: config.host || 'localhost',
       port: Number(config.port) || 6379,
       password: config.password || null,
       db: Number(config.db) || 0,
+      // TLS — field names normalised to camelCase for Rust serde
+      ssl: config.ssl || false,
+      tlsCa: config.tlsca || null,
+      tlsCert: config.tlscert || null,
+      tlsKey: config.tlskey || null,
+      // SSH tunnel
+      ssh: config.ssh || false,
+      sshHost: config.sshHost || null,
+      sshPort: Number(config.sshPort) || 22,
+      sshUser: config.sshUser || null,
+      sshPassword: config.sshPassword || null,
+      sshKey: config.sshKey || null,
+      sshKeyPassphrase: config.sshKeyPassphrase || null,
     },
   }).then(({ connectionId, serverInfo }) => {
     const index = getIndex(getState)

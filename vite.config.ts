@@ -28,6 +28,9 @@ export default defineConfig({
       fs: resolve(__dirname, 'src/renderer/compat/node-fs.ts'),
       net: resolve(__dirname, 'src/renderer/compat/node-net.ts'),
 
+      // jsonlint uses require() / Node.js built-ins — replace with browser stub
+      jsonlint: resolve(__dirname, 'src/renderer/compat/jsonlint-stub.js'),
+
       // jsonlint CLI-only deps (were webpack externals: '{}')
       file: resolve(__dirname, 'src/renderer/compat/empty.ts'),
       system: resolve(__dirname, 'src/renderer/compat/empty.ts'),

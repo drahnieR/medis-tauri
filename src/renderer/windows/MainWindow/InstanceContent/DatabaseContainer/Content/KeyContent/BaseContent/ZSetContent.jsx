@@ -185,6 +185,7 @@ class ZSetContent extends BaseContent {
         desc={this.state.desc}
         />
     }
+    columnKey="score"
     width={this.props.scoreBarWidth}
     isResizable
     cell={({rowIndex}) => {

@@ -2,8 +2,8 @@
 
 import React from 'react'
 import Immutable from 'immutable'
-import {remote} from 'electron'
-import {readFileAsync} from 'fs'
+import { open as openDialog } from '@tauri-apps/plugin-dialog'
+import { invoke } from '@tauri-apps/api/core'
 
 import './index.scss'
 
@@ -90,13 +90,9 @@ class Config extends React.PureComponent {
       <button
         className={'icon icon-dot-3 ssh-key'}
         onClick={async () => {
-          const win = remote.getCurrentWindow()
-          const files = await remote.dialog.showOpenDialog(win, {
-            properties: ['openFile']
-          })
-          if (files && files.length) {
-            const file = files[0]
-            const content = await readFileAsync(file)
+          const file = await openDialog({ multiple: false })
+          if (file) {
+            const content = await invoke('read_text_file', { path: file })
             this.setProp({[id]: content, [`${id}File`]: file})
           }
         }}
@@ -109,11 +105,11 @@ class Config extends React.PureComponent {
       <div className="nt-box" style={{width: 500, margin: '60px auto 0'}}>
         <div className="nt-form-row" style={{display: this.props.favorite ? 'block' : 'none'}}>
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" value={this.getProp('name')} onChange={this.handleChange.bind(this, 'name')} placeholder="Bookmark name" />
+          <input type="text" id="name" value={this.getProp('name')} onChange={this.handleChange.bind(this, 'name')} placeholder="Bookmark name" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} />
         </div>
         <div className="nt-form-row">
           <label htmlFor="host">Redis Host:</label>
-          <input type="text" id="host" value={this.getProp('host')} onChange={this.handleChange.bind(this, 'host')} placeholder="localhost" />
+          <input type="text" id="host" value={this.getProp('host')} onChange={this.handleChange.bind(this, 'host')} placeholder="localhost" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} />
         </div>
         <div className="nt-form-row">
           <label htmlFor="port">Port:</label>
@@ -139,11 +135,11 @@ class Config extends React.PureComponent {
         <div style={{display: this.getProp('ssh') ? 'block' : 'none'}}>
           <div className="nt-form-row">
             <label htmlFor="sshHost">SSH Host:</label>
-            <input type="text" id="sshHost" onChange={this.handleChange.bind(this, 'sshHost')} value={this.getProp('sshHost')} placeholder="" />
+            <input type="text" id="sshHost" onChange={this.handleChange.bind(this, 'sshHost')} value={this.getProp('sshHost')} placeholder="" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} />
           </div>
           <div className="nt-form-row">
             <label htmlFor="sshUser">SSH User:</label>
-            <input type="text" id="sshUser" onChange={this.handleChange.bind(this, 'sshUser')} value={this.getProp('sshUser')} placeholder="" />
+            <input type="text" id="sshUser" onChange={this.handleChange.bind(this, 'sshUser')} value={this.getProp('sshUser')} placeholder="" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} />
           </div>
           <div className="nt-form-row">
             <label htmlFor="sshPassword">SSH {this.getProp('sshKey') ? 'Key' : 'Password'}:</label>
@@ -165,14 +161,12 @@ class Config extends React.PureComponent {
                   })
                   return
                 }
-                const win = remote.getCurrentWindow()
-                const files = await remote.dialog.showOpenDialog(win, {
-                  message: 'Select a private key (Most often in the ~/.ssh)',
-                  properties: ['openFile', 'showHiddenFiles']
+                const file = await openDialog({
+                  title: 'Select a private key (Most often in the ~/.ssh)',
+                  multiple: false,
                 })
-                if (files && files.length) {
-                  const file = files[0]
-                  const content = await readFileAsync(file)
+                if (file) {
+                  const content = await invoke('read_text_file', { path: file })
                   this.setProp({sshKey: content, sshKeyFile: file})
                 }
               }}
@@ -188,6 +182,11 @@ class Config extends React.PureComponent {
           </div>
         </div>
       </div>
+      {this.props.connectStatus && (
+        <div style={{width: 500, margin: '10px auto 0', color: '#c0392b', fontSize: 12, WebkitUserSelect: 'text', userSelect: 'text', wordBreak: 'break-word'}}>
+          {this.props.connectStatus}
+        </div>
+      )}
       <div className="nt-button-group nt-button-group--pull-right" style={{width: 500, margin: '10px auto 0', paddingBottom: 10}}>
         <button
           className="nt-button" style={{float: 'left'}} onClick={() => {
@@ -202,10 +201,10 @@ class Config extends React.PureComponent {
           }}
         >Save Changes</button>
         <button
-          disabled={Boolean(this.props.connectStatus)} ref="connectButton" className="nt-button nt-button--primary" onClick={() => {
+          disabled={this.props.connectStatus === 'Connecting…'} ref="connectButton" className="nt-button nt-button--primary" onClick={() => {
             this.connect()
           }}
-        >{this.props.connectStatus || (this.state.changed ? 'Save and Connect' : 'Connect')}</button>
+        >{this.state.changed ? 'Save and Connect' : 'Connect'}</button>
       </div>
     </div>)
   }
