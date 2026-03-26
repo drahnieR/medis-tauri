@@ -11,7 +11,7 @@ if (typeof _jqtFactory === 'function' && !$.fn.terminal) {
   _jqtFactory(window, $)
 }
 
-import '../../../../../../../../node_modules/jquery.terminal/css/jquery.terminal.css'
+import 'jquery.terminal/css/jquery.terminal.css'
 import './index.scss'
 
 class Terminal extends React.PureComponent {

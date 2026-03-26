@@ -18,22 +18,22 @@ export default defineConfig({
   resolve: {
     alias: {
       // App path aliases (matching old webpack config)
-      Redux: resolve(__dirname, 'src/renderer/redux'),
-      Utils: resolve(__dirname, 'src/renderer/utils'),
+      Redux: resolve(__dirname, 'ui/renderer/redux'),
+      Utils: resolve(__dirname, 'ui/renderer/utils'),
 
       // Electron API shim — all `import ... from 'electron'` resolve here
-      electron: resolve(__dirname, 'src/renderer/compat/electron.ts'),
+      electron: resolve(__dirname, 'ui/renderer/compat/electron.ts'),
 
       // Node.js built-in stubs — real logic lives in the Rust backend (step 3)
-      fs: resolve(__dirname, 'src/renderer/compat/node-fs.ts'),
-      net: resolve(__dirname, 'src/renderer/compat/node-net.ts'),
+      fs: resolve(__dirname, 'ui/renderer/compat/node-fs.ts'),
+      net: resolve(__dirname, 'ui/renderer/compat/node-net.ts'),
 
       // jsonlint uses require() / Node.js built-ins — replace with browser stub
-      jsonlint: resolve(__dirname, 'src/renderer/compat/jsonlint-stub.js'),
+      jsonlint: resolve(__dirname, 'ui/renderer/compat/jsonlint-stub.js'),
 
       // jsonlint CLI-only deps (were webpack externals: '{}')
-      file: resolve(__dirname, 'src/renderer/compat/empty.ts'),
-      system: resolve(__dirname, 'src/renderer/compat/empty.ts'),
+      file: resolve(__dirname, 'ui/renderer/compat/empty.ts'),
+      system: resolve(__dirname, 'ui/renderer/compat/empty.ts'),
     },
   },
   root: '.',
@@ -55,7 +55,7 @@ export default defineConfig({
     strictPort: true,
     hmr: host ? { protocol: 'ws', host, port: 5183 } : undefined,
     watch: {
-      ignored: ['**/src-tauri/**'],
+      ignored: ['**/tauri/**'],
     },
   },
 })
