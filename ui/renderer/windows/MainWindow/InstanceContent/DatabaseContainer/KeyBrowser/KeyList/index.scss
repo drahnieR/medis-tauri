@@ -85,18 +85,3 @@
   border-left: none;
   border-bottom: none;
 }
-
-/* Neutralise the "stuck active" state — hover still works via :hover rules */
-.ScrollbarLayout_mainVertical.public_Scrollbar_mainActive:not(:hover) {
-  width: 15px;
-}
-.ScrollbarLayout_mainHorizontal.public_Scrollbar_mainActive:not(:hover) {
-  height: 15px;
-}
-.public_Scrollbar_main.public_Scrollbar_mainActive:not(:hover) {
-  background-color: transparent;
-}
-.public_Scrollbar_mainActive:not(:hover) .public_Scrollbar_face:after,
-.public_Scrollbar_faceActive:not(:hover):after {
-  background-color: #c2c2c2;
-}

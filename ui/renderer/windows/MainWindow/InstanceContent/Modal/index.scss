@@ -60,58 +60,6 @@
   h3 {
     display: none;
   }
-
-  .ui-corner-all {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .form-control {
-    position: relative;
-    background: none;
-    border: 0;
-    padding: 4px 0px 14px !important;
-
-    label {
-      position: absolute;
-      left: -90px;
-      text-align: right;
-      width: 80px;
-      font-weight: normal !important;
-    }
-
-    input, select {
-      width: 100% !important;
-      margin: 0 !important;
-    }
-
-    .ui-state-error {
-      position: absolute;
-      top: 25px;
-      opacity: 0;
-    }
-  }
-
-  .ui-state-error {
-    color: #ff2a1c;
-    font-size: 12px;
-  }
-
-  // input, select {
-  //   width: 100%;
-  //   min-height: 25px;
-  //   padding: 5px 10px;
-  //   line-height: 1.6;
-  //   background-color: #fff;
-  //   border: 1px solid #ddd;
-  //   outline: 0;
-
-  //   &:focus {
-  //     border-radius: 4px;
-  //     border-color: #6db3fd;
-  //     box-shadow: 3px 3px 0 #6db3fd, -3px -3px 0 #6db3fd, -3px 3px 0 #6db3fd, 3px -3px 0 #6db3fd;
-  //   }
-  // }
 }
 
 .modal-enter {
@@ -127,13 +75,13 @@
   }
 }
 
-.modal-leave {
+.modal-exit {
   .Modal__content {
     transform: translateY(0);
   }
 }
 
-.modal-leave.modal-leave-active {
+.modal-exit.modal-exit-active {
   .Modal__content {
     transform: translateY(-100%);
     transition: transform 150ms linear;

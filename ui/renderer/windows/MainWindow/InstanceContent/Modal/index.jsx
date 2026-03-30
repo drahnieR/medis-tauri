@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'json-editor'
+import JSONEditor from '@json-editor/json-editor'
 
 import './index.scss'
 
@@ -9,7 +9,6 @@ export default class Modal extends React.Component {
     if (this.editor) {
       const errors = this.editor.validate()
       if (errors.length) {
-        $('.ui-state-error', ReactDOM.findDOMNode(this.refs.form)).css('opacity', 1)
         return
       }
       this.props.onSubmit(this.editor.getValue())
@@ -33,15 +32,14 @@ export default class Modal extends React.Component {
         disable_properties: true,
         required_by_default: true,
         schema: this.props.form,
-        show_errors: 'always',
-        theme: 'jqueryui'
+        show_errors: 'always'
       })
 
       const $inputs = $('.row input', ReactDOM.findDOMNode(this.refs.form))
       $inputs.attr({ autocomplete: 'off', autocorrect: 'off', autocapitalize: 'off', spellcheck: 'false' })
       $inputs.first().focus()
     } else {
-      $('.nt-button', ReactDOM.findDOMNode(this)).first().focus()
+      ReactDOM.findDOMNode(this).focus()
     }
   }
 

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Table, Column} from 'fixed-data-table-contextmenu'
+import {Table, Column} from 'fixed-data-table-2'
 import ContentEditable from '../../ContentEditable'
 import AddButton from '../../AddButton'
 import zip from 'lodash.zip'
@@ -205,15 +205,7 @@ class KeyList extends React.Component {
     }).catch(() => {})
   }
 
-  _onDocumentMouseUp = () => {
-    const el = document.activeElement
-    if (el && el.classList.contains('public_Scrollbar_main')) {
-      el.blur()
-    }
-  }
-
   componentDidMount() {
-    document.addEventListener('mouseup', this._onDocumentMouseUp)
     $(ReactDOM.findDOMNode(this)).on('keydown', e => {
       if (typeof this.index === 'number' && typeof this.state.editableKey !== 'string') {
         if (e.keyCode === 8) {
@@ -242,10 +234,6 @@ class KeyList extends React.Component {
       return true
     })
     this.scan()
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mouseup', this._onDocumentMouseUp)
   }
 
   setTTLforKey() {

@@ -1,7 +1,7 @@
 'use strict'
 
 import '../../photon/css/photon.min.css'
-import 'fixed-data-table-contextmenu/dist/fixed-data-table.css'
+import 'fixed-data-table-2/dist/fixed-data-table.css'
 import '../../styles/global.scss'
 
 import ReactDOM from 'react-dom'
