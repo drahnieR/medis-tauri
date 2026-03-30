@@ -5,3 +5,4 @@ npm-debug.log
 *.provisionprofile
 .awcache
 Medis.app
+target
