@@ -1,20 +1,8 @@
 # Medis
 
-### Notice: We just released Medis 2! 🚀🚀🚀
-
-Compared to Medis (this repo), Medis 2 provides more delightful features, such as **tree view** (yes, finally!), streams, alert mode, **dark mode**, and more. Besides that, Medis 2 is rewritten from the beginning with native technology, making it more morden, beautiful, and fast!
-
-What's more, **Medis 2 is free 💰 to download**! Don't hesitate, download it from the App Store now and try it out!
-
-[![Download on the App Store](http://getmedis.com/download.svg)](https://apps.apple.com/us/app/medis-2-gui-for-redis/id1579200037?mt=12)
-
-_(or searching "Medis 2" on macOS App Store if the above link doesn't work for you. Also, you can download the app directly from the [official website](https://getmedis.com/))_
-
-![Medis](http://getmedis.com/screen.png)
-
 ---
 
-Medis is a beautiful, easy-to-use Redis management application built on the modern web with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), and [Redux](https://github.com/rackt/redux). It's powered by many awesome Node.js modules, especially [ioredis](https://github.com/luin/ioredis) and [ssh2](https://github.com/mscdex/ssh2).
+The original [Medis](https://github.com/luin/medis) is a beautiful, easy-to-use Redis management application built on the modern web with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), and [Redux](https://github.com/rackt/redux). This project forks, and ports Medis to [Tauri](https://tauri.app/) with some life quality improvements.
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
@@ -33,36 +21,30 @@ It also supports many advanced features:
 
 **Note**: Medis only supports Redis >= 2.8 version because `SCAN` command was introduced since 2.8. `SCAN` is very useful to get key list without blocking the server, which is crucial to the production environment. Because the latest stable is 5.0 and 2.6 is a very old version, Medis doesn't support it.
 
-<hr />
+## Requirements
 
-## Download Medis on Windows
-
-You can download compiled installer of Medis for Windows from the below page
-[download page](https://github.com/classfellow/medis/releases/tag/win)
-
-## Download Medis on Mac
-
-You can download compiled versions of Medis for Mac OS X from [the release page](https://github.com/luin/medis/releases).
+- [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/)
+- [Rust](https://rustup.rs/) (stable toolchain)
+- [Tauri prerequisites](https://tauri.app/start/prerequisites/) for your platform
 
 ## Running Locally
 
-1. Install dependencies
-
+1. Install dependencies:
+```sh
+pnpm install
 ```
-    $ npm install
-```
-
-2. Compile assets:
-
-```
-    $ npm run pack
+2. Start in development mode:
+```sh
+pnpm dev
 ```
 
-3. Run with Electron:
+## Building
 
+```sh
+pnpm build:tauri
 ```
-    $ npm start
-```
+
+The packaged app will be in `tauri/target/release/bundle/`.
 
 ## Connect to Heroku
 
@@ -74,25 +56,6 @@ redis://x:PASSWORD@HOST:PORT
 ```
 
 And then input `HOST`, `PORT` and `PASSWORD` to the connection tab.
-
-## I Love This. How do I Help?
-
-- Simply star this repository :-)
-- Help us spread the world on Facebook and Twitter
-- Contribute Code! We're developers! (See Roadmap below)
-- Medis is available on the Mac App Store as a paid software. I'll be very grateful if you'd like to buy it to encourage me to continue maintaining Medis. There are no additional features comparing with the open-sourced version, except the fact that you can enjoy auto updating that brought by the Mac App Store. <br> [![Download on the App Store](http://getmedis.com/download.svg)](https://apps.apple.com/us/app/medis-2-gui-for-redis/id1579200037?mt=12)
-
-## Roadmap
-
-- Windows and Linux version (with electron-packager)
-- Support for SaaS Redis services
-- Lua script editor
-- Cluster management
-- GEO keys supporting
-
-## Contributors
-
-<table><tr><td width="20%"><a href="https://github.com/luin"><img src="https://avatars1.githubusercontent.com/u/635902?v=3" /></a><p align="center">luin</p></td><td width="20%"><a href="https://github.com/kvnsmth"><img src="https://avatars0.githubusercontent.com/u/127?v=3" /></a><p align="center">kvnsmth</p></td><td width="20%"><a href="https://github.com/dpde"><img src="https://avatars2.githubusercontent.com/u/485645?v=3" /></a><p align="center">dpde</p></td><td width="20%"><a href="https://github.com/ogasawaraShinnosuke"><img src="https://avatars1.githubusercontent.com/u/5368888?v=3" /></a><p align="center">ogasawaraShinnosuke</p></td><td width="20%"><a href="https://github.com/naholyr"><img src="https://avatars1.githubusercontent.com/u/214067?v=3" /></a><p align="center">naholyr</p></td></tr><tr><td width="20%"><a href="https://github.com/hlobil"><img src="https://avatars2.githubusercontent.com/u/484499?v=3" /></a><p align="center">hlobil</p></td><td width="20%"><a href="https://github.com/Janpot"><img src="https://avatars1.githubusercontent.com/u/2109932?v=3" /></a><p align="center">Janpot</p></td></table>
 
 ## License
 
