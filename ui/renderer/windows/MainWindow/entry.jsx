@@ -23,15 +23,21 @@ window.addEventListener('contextmenu', e => { e.preventDefault() })
   await win.show()
   await win.setFocus()
   let saveTimer
-  window.addEventListener('resize', () => {
+  const saveState = async () => {
+    const pos = await win.outerPosition()
+    invoke('save_window_size', {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      x: pos.x,
+      y: pos.y,
+    }).catch(console.error)
+  }
+  const scheduleSave = () => {
     clearTimeout(saveTimer)
-    saveTimer = setTimeout(() => {
-      invoke('save_window_size', {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      }).catch(console.error)
-    }, 500)
-  })
+    saveTimer = setTimeout(saveState, 500)
+  }
+  window.addEventListener('resize', scheduleSave)
+  win.listen('tauri://move', scheduleSave)
 })()
 
 // Step 4: replace with tauri listen('action', ...) to receive events from

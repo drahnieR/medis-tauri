@@ -431,7 +431,14 @@ fn read_text_file(path: String) -> Result<String, String> {
 // ---------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize)]
-struct WindowSize { width: f64, height: f64 }
+struct WindowSize {
+    width: f64,
+    height: f64,
+    #[serde(default)]
+    x: Option<i32>,
+    #[serde(default)]
+    y: Option<i32>,
+}
 
 fn window_size_path(app: &tauri::AppHandle) -> Option<std::path::PathBuf> {
     app.path().app_data_dir().ok().map(|d| d.join("window_size.json"))
@@ -443,13 +450,28 @@ fn load_window_size(app: &tauri::AppHandle) -> Option<WindowSize> {
     serde_json::from_str(&json).ok()
 }
 
+fn position_on_screen(window: &tauri::WebviewWindow, x: i32, y: i32) -> bool {
+    window.available_monitors()
+        .unwrap_or_default()
+        .iter()
+        .any(|m| {
+            let pos = m.position();
+            let size = m.size();
+            x >= pos.x
+                && x < pos.x + size.width as i32
+                && y >= pos.y
+                && y < pos.y + size.height as i32
+        })
+}
+
 #[tauri::command]
-fn save_window_size(app: tauri::AppHandle, width: f64, height: f64) -> Result<(), String> {
+fn save_window_size(app: tauri::AppHandle, width: f64, height: f64, x: i32, y: i32) -> Result<(), String> {
     if let Some(path) = window_size_path(&app) {
         if let Some(parent) = path.parent() {
             std::fs::create_dir_all(parent).map_err(|e| e.to_string())?;
         }
-        let json = serde_json::to_string(&WindowSize { width, height }).map_err(|e| e.to_string())?;
+        let json = serde_json::to_string(&WindowSize { width, height, x: Some(x), y: Some(y) })
+            .map_err(|e| e.to_string())?;
         std::fs::write(path, json).map_err(|e| e.to_string())?;
     }
     Ok(())
@@ -498,11 +520,18 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
-            if let Some(size) = load_window_size(&app.handle()) {
+            if let Some(state) = load_window_size(&app.handle()) {
                 let _ = window.set_size(tauri::Size::Logical(tauri::LogicalSize {
-                    width: size.width,
-                    height: size.height,
+                    width: state.width,
+                    height: state.height,
                 }));
+                if let (Some(x), Some(y)) = (state.x, state.y) {
+                    if position_on_screen(&window, x, y) {
+                        let _ = window.set_position(tauri::Position::Physical(
+                            tauri::PhysicalPosition { x, y },
+                        ));
+                    }
+                }
             }
             Ok(())
         })

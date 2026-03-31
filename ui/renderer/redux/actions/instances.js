@@ -1,6 +1,5 @@
-import {createAction} from 'Utils';
-import {remote} from 'electron'
-import {getId} from 'Utils'
+import {createAction, getId} from 'Utils';
+import {disconnect} from './connection'
 
 export const createInstance = createAction('CREATE_INSTANCE', data => (
   Object.assign({}, data, {key: getId('instance')})
@@ -17,7 +16,7 @@ export const moveInstance = createAction('MOVE_INSTANCE', (from, to) => ({getSta
   next({fromIndex, toIndex, activeInstanceKey: instance.get('key')})
 })
 
-export const delInstance = createAction('DEL_INSTANCE', key => ({getState, next}) => {
+export const delInstance = createAction('DEL_INSTANCE', key => ({getState, next, dispatch}) => {
   const {activeInstanceKey, instances} = getState()
   if (!key) {
     key = activeInstanceKey
@@ -30,12 +29,11 @@ export const delInstance = createAction('DEL_INSTANCE', key => ({getState, next}
   if (key === activeInstanceKey) {
     const item = instances.get(targetIndex + 1) || (targetIndex > 0 && instances.get(targetIndex - 1))
 
-    console.log('still', item, targetIndex, instances.size)
     if (item) {
       ret.activeInstanceKey = item.get('key')
     } else {
-      remote.getCurrentWindow().close();
-      return;
+      dispatch(disconnect())
+      return
     }
   }
 
